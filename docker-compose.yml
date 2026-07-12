@@ -1,0 +1,11 @@
+services:
+  notifier:
+    build: .
+    image: tg-channel-ozbargain:latest
+    env_file:
+      - .env
+    environment:
+      ANCHOR_FILE: /data/anchor.txt
+    volumes:
+      - ./data:/data
+    restart: "no"
