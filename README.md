@@ -34,10 +34,18 @@ This will persist state to `./anchor.txt` unless `ANCHOR_FILE` is explicitly set
 
 ## Run with Docker Compose (One Shot)
 
+The image is pulled from GHCR (built by `.github/workflows/deploy.yml` on pushes to `master`/`main`), not built locally.
+
 ```bash
 mkdir -p data
-docker compose build
+docker compose pull
 docker compose run --rm notifier
+```
+
+If the GHCR package is private, log in first (one-time, needs a PAT with `read:packages`):
+
+```bash
+docker login ghcr.io -u <github-username>
 ```
 
 Anchor state is stored in `./data/anchor.txt` on the host.
@@ -49,7 +57,7 @@ Add to crontab (assume your user is `pi` and project is in `/home/pi/project/tg_
 ```bash
 mkdir -p /home/pi/logs
 crontab -e
-*/5 * * * * cd /home/pi/project/tg_channel_ozbargain && /usr/bin/docker compose run --rm notifier >> /home/pi/logs/tg_channel_ozbargain.log 2>&1
+*/5 * * * * cd /home/pi/project/tg_channel_ozbargain && /usr/bin/docker compose pull --quiet && /usr/bin/docker compose run --rm notifier >> /home/pi/logs/tg_channel_ozbargain.log 2>&1
 ```
 
 Logs are centralized under `~/logs/` (shared across cron jobs) rather than kept per-project.
