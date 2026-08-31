@@ -1,7 +1,7 @@
 services:
   notifier:
-    build: .
-    image: tg-channel-ozbargain:latest
+    image: ghcr.io/rickhehe/tg-channel-ozbargain:latest
+    pull_policy: always
     env_file:
       - .env
     environment:
