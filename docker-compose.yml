@@ -6,6 +6,8 @@ services:
       - .env
     environment:
       ANCHOR_FILE: /data/anchor.txt
+      CLASSIFIER_CACHE_FILE: /data/classifier_cache.json
+      CLASSIFIER_EVAL_LOG_FILE: /data/classifier_eval_log.jsonl
     volumes:
       - ./data:/data
     restart: "no"

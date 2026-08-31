@@ -13,3 +13,5 @@ wheels/
 .env
 anchor.txt
 data/
+classifier_cache.json
+classifier_eval_log.jsonl

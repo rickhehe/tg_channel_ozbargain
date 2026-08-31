@@ -44,11 +44,15 @@ Anchor state is stored in `./data/anchor.txt` on the host.
 
 ## Cron on Raspberry Pi
 
-Add to crontab:
+Add to crontab (assume your user is `pi` and project is in `/home/pi/project/tg_channel_ozbargain`):
 
-```cron
-*/10 * * * * cd /home/pi/project/tg_channel_ozbargain && /usr/bin/docker compose run --rm notifier >> /home/pi/project/tg_channel_ozbargain/cron.log 2>&1
+```bash
+mkdir -p /home/pi/logs
+crontab -e
+*/5 * * * * cd /home/pi/project/tg_channel_ozbargain && /usr/bin/docker compose run --rm notifier >> /home/pi/logs/tg_channel_ozbargain.log 2>&1
 ```
+
+Logs are centralized under `~/logs/` (shared across cron jobs) rather than kept per-project.
 
 ## CI Image Build
 

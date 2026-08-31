@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
+from src.utils.classifier import classify_deals
 from src.utils.get_deals import get_deals_block, save_anchor
 from src.utils.telegram import send_telegram_message
 
@@ -31,7 +32,12 @@ def format_deal_message(deal):
     if len(content) > 240:
         snippet = f"{snippet}..."
 
-    return f"{title}\n{url}\n\n{snippet}"
+    classification = deal.get("classification")
+    tag_line = ""
+    if classification:
+        tag_line = f"\n[{classification['category']} | {classification['discount_worth']}]"
+
+    return f"{title}{tag_line}\n{url}\n\n{snippet}"
 
 
 def main():
@@ -52,6 +58,8 @@ def main():
     if not deals:
         LOGGER.info("No new deals found, exiting")
         return
+
+    deals = classify_deals(deals)
 
     # Sort deals by node_id to ensure they are sent in order
     deals.sort(key=lambda x: x['node_id'])
